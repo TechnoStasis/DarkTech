@@ -8,14 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
  * This class is derived from the Code Snippets/ Classes post in the FTB forums.
  * 
  * It can be found at <http://forum.feed-the-beast.com/threads/code-snippets-classes.51404/>
- * 
- * The distributor of this class will not be held liable for any damages caused for face aching to due to facepalm 
- * or anything in general. 
- * 
- * Forward your concerns to the link above.
- * 
- * --Yvesm
- * 
  * **/
 public class NBTHelper
 {
