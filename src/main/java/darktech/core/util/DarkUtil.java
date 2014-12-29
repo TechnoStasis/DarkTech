@@ -2,6 +2,7 @@ package darktech.core.util;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import darktech.api.IEnergyTile;
 import darktech.api.ITileBindable;
 
 public class DarkUtil {
@@ -9,6 +10,16 @@ public class DarkUtil {
 	public static String convertCoordsToString(double x, double y, double z)
 	{
 		return "X: " + x + " Y: " + y + " Z: " + z;
+	}
+	
+	public static boolean validateIfEnergetic(int x, int y, int z, World world)
+	{
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if(tile != null && tile instanceof IEnergyTile)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean validateIfBindable(int x, int y, int z, World world) {
