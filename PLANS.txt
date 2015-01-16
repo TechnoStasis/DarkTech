@@ -5,4 +5,7 @@ linking relays up to each other, with one end a generator, and another a consume
 to the relays and can store a small buffer of energy. If the consumer needs power, the conduits have power ready to give to the consumer.
 Conduits however will be slower in drawing energy unlike, making them a good storage over long distances. "Networks" can be split up by linking multiple relays to one
 "intersection" relay. Consumers will be similar conduits, and can link up with relays/conduits and drain from them. Relays can still link to it. But it will not provide power to them.
-Generators, or more in general, providers, will be able to provide energy to relays that link to it. An example would be conduits as they can store energy and provide for them
+Generators, or more in general, providers, will be able to provide energy to relays that link to it. An example would be conduits as they can store energy and provide for them.
+
+Tech
+The power needs to be used right? Planned tech is the Powered Heater, which will heat up furnaces above it at the cost of power.

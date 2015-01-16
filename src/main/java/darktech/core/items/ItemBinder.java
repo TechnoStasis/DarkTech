@@ -49,6 +49,18 @@ public class ItemBinder extends Item {
 			}
 		} else
 		{
+			if(Math.abs(x-getBindX(stack)) > 16 || Math.abs(y - getBindY(stack)) > 16 || Math.abs(z - getBindZ(stack)) > 16)
+			{
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Bound block too far"));
+				return false;
+			}
+			
+			if(x == getBindX(stack) && y == getBindY(stack) && z == getBindZ(stack))
+			{
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "You cannot bind a block to itself!"));
+				return false;
+			}
+			
 			if(DarkUtil.validateIfBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world) && DarkUtil.validateIfBindable(x, y, z, world))
 			{
 				ITileBindable bind = DarkUtil.castTileToBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world);
@@ -61,7 +73,7 @@ public class ItemBinder extends Item {
 			{
 				//System.out.println(DarkUtil.validateIfBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world));
 				//System.out.println("FAIL!!");
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "darktech.api.BindableNotFoundException: Was not able to find original bound block."));
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "BindableNotFoundException: Was not able to find original bound block."));
 				setBind(stack,0,-1,0);
 			}
 		}

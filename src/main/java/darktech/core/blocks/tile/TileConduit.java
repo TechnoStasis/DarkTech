@@ -1,11 +1,13 @@
 package darktech.core.blocks.tile;
 
-import net.minecraft.init.Blocks;
+import java.util.List;
+
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import darktech.api.IEnergyTile;
 import darktech.api.ITileBindable;
-import darktech.core.DarkTech;
 import darktech.core.util.DarkUtil;
 
 public class TileConduit extends BaseTile implements IEnergyTile, ITileBindable {
@@ -15,7 +17,8 @@ public class TileConduit extends BaseTile implements IEnergyTile, ITileBindable 
 	int z = 0;
 
 	public void updateEntity() {
-
+		
+		
 	}
 
 	public void readNBTData(NBTTagCompound cmp) {

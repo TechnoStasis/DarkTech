@@ -1,5 +1,9 @@
 package darktech.core;
 
+import java.util.HashMap;
+
+import net.minecraft.item.Item;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,10 +25,13 @@ public class DarkTech {
 	@SidedProxy(serverSide = "darktech.core.proxies.CommonProxy", clientSide = "darktech.core.proxies.ClientProxy")
 	public static CommonProxy proxy;
 	
+	public static HashMap<Item, Item> crucibleRecipe = new HashMap<Item, Item>();
+	
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent e)
 	{
 		ModBlocks.i();
+		proxy.preInit();
 	}
 	
 	@EventHandler
