@@ -1,4 +1,4 @@
-package darktech.core.thirdparty.ftb;
+package modframe.core.thirdparty;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

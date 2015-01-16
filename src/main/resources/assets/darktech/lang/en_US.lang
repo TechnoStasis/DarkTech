@@ -1,11 +1,5 @@
-#--------------------------
-Do not tamper with when decompiling/deobfuscating mod.
+---BLOCK/S START---
 
-Side effects may include incomprehensible words and possibly lots of Arcane warp.
-
--#Author
---------------------------#
-
-
-#--BLOCK/S--#
 tile.conduit.name=Energy Relay
+
+---BLOCK/S END---

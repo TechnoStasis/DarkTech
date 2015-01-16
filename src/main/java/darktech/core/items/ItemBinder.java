@@ -2,6 +2,7 @@ package darktech.core.items;
 
 import java.util.List;
 
+import modframe.core.thirdparty.NBTHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,7 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import darktech.api.ITileBindable;
-import darktech.core.thirdparty.ftb.NBTHelper;
 import darktech.core.util.DarkUtil;
 
 public class ItemBinder extends Item {
@@ -32,6 +32,7 @@ public class ItemBinder extends Item {
 		
 	    if(world.isRemote)
 	    	return false;
+	    //The method parameters are unpredictable and sometimes returns the coordinates of the block above. Resorted to this for now.
 		MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
 		
 		int x = mop.blockX;
@@ -40,9 +41,10 @@ public class ItemBinder extends Item {
 		
 		TileEntity tile = world.getTileEntity(x,y,z);
 		
+		//Binding Logistics
 		if(getBindY(stack) == -1 || getBindY(stack) == 0)
 		{
-			if(DarkUtil.validateIfBindable(x, y, z, world))
+			if(DarkUtil.validateIfTileBindable(x, y, z, world))
 			{
 				setBind(stack,x,y,z);
 				player.addChatMessage(new ChatComponentText("Bound to: " + DarkUtil.convertCoordsToString(x, y, z)));
@@ -61,7 +63,8 @@ public class ItemBinder extends Item {
 				return false;
 			}
 			
-			if(DarkUtil.validateIfBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world) && DarkUtil.validateIfBindable(x, y, z, world))
+			//TODO Check if in same dimension.
+			if(DarkUtil.validateIfTileBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world) && DarkUtil.validateIfTileBindable(x, y, z, world))
 			{
 				ITileBindable bind = DarkUtil.castTileToBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world);
 				bind.bindToCoords(x, y, z, world);

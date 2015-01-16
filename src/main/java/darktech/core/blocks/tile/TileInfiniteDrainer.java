@@ -56,8 +56,6 @@ public class TileInfiniteDrainer extends BaseTile implements IEnergyTile, ITileB
 		x = x2;
 		y = y2;
 		z = z2;
-		
-		System.out.println("ITS A TRAP");
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);		
 	}
 	

@@ -5,6 +5,11 @@ import net.minecraft.world.World;
 import darktech.api.IEnergyTile;
 import darktech.api.ITileBindable;
 
+/**
+ * 
+ * Utility methods to aid in the tediousness that is debugging.
+ * 
+ * ***/
 public class DarkUtil {
 
 	public static String convertCoordsToString(double x, double y, double z)
@@ -12,9 +17,9 @@ public class DarkUtil {
 		return "X: " + x + " Y: " + y + " Z: " + z;
 	}
 	
-	public static boolean validateIfEnergetic(int x, int y, int z, World world)
+	public static boolean validateIfEnergetic(int x, int y, int z, World worldObj)
 	{
-		TileEntity tile = world.getTileEntity(x, y, z);
+		TileEntity tile = worldObj.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof IEnergyTile)
 		{
 			return true;
@@ -22,7 +27,7 @@ public class DarkUtil {
 		return false;
 	}
 	
-	public static boolean validateIfBindable(int x, int y, int z, World world) {
+	public static boolean validateIfTileBindable(int x, int y, int z, World world) {
 		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof ITileBindable)
 		{
@@ -33,7 +38,7 @@ public class DarkUtil {
 	
 	public static ITileBindable castTileToBindable(int x, int y, int z, World world)
 	{
-		if(validateIfBindable(x,y,z,world))
+		if(validateIfTileBindable(x,y,z,world))
 		{
 			return (ITileBindable) world.getTileEntity(x, y, z);
 		}

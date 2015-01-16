@@ -10,15 +10,19 @@ import darktech.api.IEnergyTile;
 import darktech.api.ITileBindable;
 import darktech.core.util.DarkUtil;
 
-public class TileConduit extends BaseTile implements IEnergyTile, ITileBindable {
+public class TileRelay extends BaseTile implements IEnergyTile, ITileBindable {
 
 	int x = 0;
-	int y = 0;
+	int y = -1;
 	int z = 0;
 
 	public void updateEntity() {
-		
-		
+		if(!DarkUtil.validateIfEnergetic(x, y, z, worldObj)){
+			x = 0;
+			y = -1;
+			z = 0;
+		return;
+		}
 	}
 
 	public void readNBTData(NBTTagCompound cmp) {
