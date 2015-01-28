@@ -8,14 +8,19 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+
+import darktech.magitech.blocks.tile.TileVoidCrucible;
 
 public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 		IItemRenderer {
@@ -36,7 +41,8 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		renderTileEntityAt(null, 0, 0, 0, 0);
+		render(0, 0, 0);
+		renderPortal(0, 0, 0);
 
 	}
 
@@ -46,14 +52,32 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 	private static final ResourceLocation portalTexture = new ResourceLocation("textures/entity/end_portal.png");
 	private static final Random random = new Random();
 	FloatBuffer floatBuffer = GLAllocation.createDirectFloatBuffer(16);
-
+	
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y,
+	public void renderTileEntityAt(TileEntity t, double x, double y,
 			double z, float p_147500_8_) {
-
+		
 		render(x, y, z);
+		
+		TileVoidCrucible tile = (TileVoidCrucible) t;
+			
+		if(tile.getStackInSlot(0) != null) {		
+			EntityItem item = new EntityItem(tile.getWorldObj(), 0, 0, 0, tile.getStackInSlot(0).copy());
+			item.hoverStart = 0;
+			GL11.glPushMatrix();
+			GL11.glTranslated(x + 0.5D, y + 1D, z + 0.5D);
+			if((tile.getStackInSlot(0).getItem() instanceof ItemBlock))
+			{
+				GL11.glScaled(2, 2, 2);
+			}
+			
+			GL11.glRotatef((tile.getWorldObj().getWorldTime() % 360), 0, 1, 0);
+			RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
+			
+			GL11.glPopMatrix();
+		}
+		
 		renderPortal(x, y, z);
-
 	}
 
 	// Renders the model, but not the portal.
@@ -61,15 +85,17 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 		GL11.glPushMatrix();
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		GL11.glTranslated(x + 0.5, y + 0.5D, z + 0.5);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glTranslated(x + 0.5, y - 0.89D, z + 0.5);
 		GL11.glScaled(0.1, 0.1, 0.1);
-		OpenGlHelper.setLightmapTextureCoords(0, 0, 0);
+		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0, 0);
 		model.render();
 
+		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 	}
 
-	//Messy Code Ctrl+Shift+F doesn't help.
+	
 	public void renderPortal(double x, double y, double z) {
 		TileEntityRendererDispatcher t = TileEntityRendererDispatcher.instance;
 
@@ -87,8 +113,7 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 			float f7 = 1.0F / (f5 + 1.0F);
 
 			if (i == 0) {
-				Minecraft.getMinecraft().renderEngine
-						.bindTexture(skyTexture);
+				Minecraft.getMinecraft().renderEngine.bindTexture(skyTexture);
 				f7 = 0.1F;
 				f5 = 65.0F;
 				f6 = 0.125F;
@@ -97,8 +122,7 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 			}
 
 			if (i == 1) {
-				Minecraft.getMinecraft().renderEngine
-						.bindTexture(portalTexture);
+				Minecraft.getMinecraft().renderEngine.bindTexture(portalTexture);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 				f6 = 0.5F;
@@ -110,22 +134,14 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 			float f11 = f9 / f10;
 			f11 += (float) (y + (double) f4);
 			GL11.glTranslatef(f1, f11, f3);
-			GL11.glTexGeni(GL11.GL_S, GL11.GL_TEXTURE_GEN_MODE,
-					GL11.GL_OBJECT_LINEAR);
-			GL11.glTexGeni(GL11.GL_T, GL11.GL_TEXTURE_GEN_MODE,
-					GL11.GL_OBJECT_LINEAR);
-			GL11.glTexGeni(GL11.GL_R, GL11.GL_TEXTURE_GEN_MODE,
-					GL11.GL_OBJECT_LINEAR);
-			GL11.glTexGeni(GL11.GL_Q, GL11.GL_TEXTURE_GEN_MODE,
-					GL11.GL_EYE_LINEAR);
-			GL11.glTexGen(GL11.GL_S, GL11.GL_OBJECT_PLANE,
-					this.calcFloatBuffer(1.0F, 0.0F, 0.0F, 0.0F));
-			GL11.glTexGen(GL11.GL_T, GL11.GL_OBJECT_PLANE,
-					this.calcFloatBuffer(0.0F, 0.0F, 1.0F, 0.0F));
-			GL11.glTexGen(GL11.GL_R, GL11.GL_OBJECT_PLANE,
-					this.calcFloatBuffer(0.0F, 0.0F, 0.0F, 1.0F));
-			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE,
-					this.calcFloatBuffer(0.0F, 1.0F, 0.0F, 0.0F));
+			GL11.glTexGeni(GL11.GL_S, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_T, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_R, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_Q, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_EYE_LINEAR);
+			GL11.glTexGen(GL11.GL_S, GL11.GL_OBJECT_PLANE, this.calcFloatBuffer(1.0F, 0.0F, 0.0F, 0.0F));
+			GL11.glTexGen(GL11.GL_T, GL11.GL_OBJECT_PLANE, this.calcFloatBuffer(0.0F, 0.0F, 1.0F, 0.0F));
+			GL11.glTexGen(GL11.GL_R, GL11.GL_OBJECT_PLANE, this.calcFloatBuffer(0.0F, 0.0F, 0.0F, 1.0F));
+			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.calcFloatBuffer(0.0F, 1.0F, 0.0F, 0.0F));
 			GL11.glEnable(GL11.GL_TEXTURE_GEN_S);
 			GL11.glEnable(GL11.GL_TEXTURE_GEN_T);
 			GL11.glEnable(GL11.GL_TEXTURE_GEN_R);
@@ -134,18 +150,14 @@ public class VoidCrucibleRenderer extends TileEntitySpecialRenderer implements
 			GL11.glMatrixMode(GL11.GL_TEXTURE);
 			GL11.glPushMatrix();
 			GL11.glLoadIdentity();
-			GL11.glTranslatef(0.0F,
-					(float) (Minecraft.getSystemTime() % 700000L) / 700000.0F,
-					0.0F);
+			GL11.glTranslatef(0.0F, (float) (Minecraft.getSystemTime() % 700000L) / 700000.0F, 0.0F);
 			GL11.glScalef(f6, f6, f6);
 			GL11.glTranslatef(0.5F, 0.5F, 0.0F);
-			GL11.glRotatef((float) (i * i * 4321 + i * 9) * 2.0F, 0.0F, 0.0F,
-					1.0F);
+			GL11.glRotatef((float) (i * i * 4321 + i * 9) * 2.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
 			GL11.glTranslatef(-f1, -f3, -f2);
 			f9 = f8 + ActiveRenderInfo.objectY;
-			GL11.glTranslatef(ActiveRenderInfo.objectX * f5 / f9,
-					ActiveRenderInfo.objectZ * f5 / f9, -f2);
+			GL11.glTranslatef(ActiveRenderInfo.objectX * f5 / f9, ActiveRenderInfo.objectZ * f5 / f9, -f2);
 
 			GL11.glScaled(1, 1, 1);
 			Tessellator tessellator = Tessellator.instance;

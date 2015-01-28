@@ -11,7 +11,6 @@ public class BlockInfiniteDrainer extends BlockContainer {
 	public BlockInfiniteDrainer() {
 		super(Material.iron);
 		setBlockBounds(0.30F,0.30F,0.30F,0.70F,0.70F,0.70F);
-		setBlockName("drainer");
 	}
 
 	@Override

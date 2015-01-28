@@ -25,14 +25,14 @@ public class ItemBinder extends Item {
 
 	//@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
-	 if((getBindY(stack) != -1) || getBindY(stack) != 0) list.add("Binding Coords: " + DarkUtil.convertCoordsToString(getBindX(stack), getBindY(stack), getBindZ(stack)));
+	 if((getBindY(stack) >= -1) && getBindY(stack) >= 0) list.add("Binding Coords: " + DarkUtil.convertCoordsToString(getBindX(stack), getBindY(stack), getBindZ(stack)));
 	}
 
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int wz, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
 		
 	    if(world.isRemote)
 	    	return false;
-	    //The method parameters are unpredictable and sometimes returns the coordinates of the block above. Resorted to this for now.
+	    
 		MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
 		
 		int x = mop.blockX;
@@ -40,14 +40,12 @@ public class ItemBinder extends Item {
 		int z = mop.blockZ;
 		
 		TileEntity tile = world.getTileEntity(x,y,z);
-		
-		//Binding Logistics
 		if(getBindY(stack) == -1 || getBindY(stack) == 0)
 		{
 			if(DarkUtil.validateIfTileBindable(x, y, z, world))
 			{
 				setBind(stack,x,y,z);
-				player.addChatMessage(new ChatComponentText("Bound to: " + DarkUtil.convertCoordsToString(x, y, z)));
+				player.addChatMessage(new ChatComponentText("Saved to: " + DarkUtil.convertCoordsToString(x, y, z)));
 			}
 		} else
 		{
@@ -67,16 +65,15 @@ public class ItemBinder extends Item {
 			if(DarkUtil.validateIfTileBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world) && DarkUtil.validateIfTileBindable(x, y, z, world))
 			{
 				ITileBindable bind = DarkUtil.castTileToBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world);
-				bind.bindToCoords(x, y, z, world);
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Successfuly bound block"));
+				if (bind.bindToCoords(x, y, z, world))
+						setBind(stack, 0, -1, 0);
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Successfuly bound current block to saved one"));
 				//System.out.println("SUCCESS!");
-				
-				setBind(stack, 0, -1, 0);
 			} else
 			{
 				//System.out.println(DarkUtil.validateIfBindable(getBindX(stack), getBindY(stack), getBindZ(stack), world));
 				//System.out.println("FAIL!!");
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "BindableNotFoundException: Was not able to find original bound block."));
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "darktech.core.BindableNotFoundException: Was not able to find original saved block."));
 				setBind(stack,0,-1,0);
 			}
 		}

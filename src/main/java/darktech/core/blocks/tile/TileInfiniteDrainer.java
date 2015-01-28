@@ -3,6 +3,7 @@ package darktech.core.blocks.tile;
 import darktech.api.IEnergyTile;
 import darktech.api.ITileBindable;
 import darktech.core.util.DarkUtil;
+import modframe.core.impl.BaseTile;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -52,11 +53,12 @@ public class TileInfiniteDrainer extends BaseTile implements IEnergyTile, ITileB
 	}
 
 	@Override
-	public void bindToCoords(int x2, int y2, int z2, World world) {
+	public boolean bindToCoords(int x2, int y2, int z2, World world) {
 		x = x2;
 		y = y2;
 		z = z2;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);		
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);	
+		return true;
 	}
 	
 }

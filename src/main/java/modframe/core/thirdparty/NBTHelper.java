@@ -30,13 +30,17 @@ public class NBTHelper
      *
      * @param itemStack
      *         The ItemStack for which its NBT Tag Compound is being checked for initialization
+     * @return Whether the NBTTagCompound was actually initialized.
      */
-    private static void initNBTTagCompound(ItemStack itemStack)
+    private static boolean initNBTTagCompound(ItemStack itemStack)
     {
         if (itemStack.stackTagCompound == null)
         {
             itemStack.setTagCompound(new NBTTagCompound());
+            return true;
         }
+        
+        return false;
     }
 
     public static void setLong(ItemStack itemStack, String keyName, long keyValue)

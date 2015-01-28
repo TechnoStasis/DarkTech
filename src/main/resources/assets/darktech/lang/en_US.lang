@@ -1,5 +1,9 @@
 ---BLOCK/S START---
 
-tile.conduit.name=Energy Relay
+tile.darktech:relay.name=Energy Relay
+tile.darktech:basicGen.name=Hand Powered Generator
+tile.darktech:creativeProvider.name=Creative Energy Provider
+tile.darktech:infinitum.name=Infinite Drainer
+tile.darktech:voidCrucible.name=Void Crucible
 
 ---BLOCK/S END---

@@ -1,5 +1,6 @@
 package darktech.core.blocks.tile;
 
+import modframe.core.impl.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import darktech.api.IEnergyTile;
@@ -66,8 +67,9 @@ public class TileManualGenerator extends BaseTile implements IEnergyTile, ITileB
 	}
 
 	@Override
-	public void bindToCoords(int x2, int y2, int z2, World world) {
+	public boolean bindToCoords(int x2, int y2, int z2, World world) {
 		// NO-OP
+		return false;
 	}
 	
 }

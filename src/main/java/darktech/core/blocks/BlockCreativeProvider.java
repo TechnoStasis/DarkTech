@@ -11,7 +11,6 @@ public class BlockCreativeProvider extends BlockContainer {
 	public BlockCreativeProvider() {
 		super(Material.iron);
 		setBlockBounds(0.30F, 0.30F, 0.30F, 0.70F, 0.70F, 0.70F);
-		setBlockName("provider");
 	}
 
 	@Override

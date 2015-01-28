@@ -11,12 +11,11 @@ public class BlockManualGenerator extends BlockContainer {
 
 	public BlockManualGenerator() {
 		super(Material.iron);
-		this.setBlockName("manualGenerator");
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		// TODO Auto-generated method stub
+		
 		return new TileManualGenerator();
 	}
 

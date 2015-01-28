@@ -6,13 +6,11 @@ import net.minecraft.item.ItemStack;
 
 public class VoidCrucibleRecipe {
 
-	// Input, like regular recipes can be either a block, an item or a stack.
 	ItemStack input;
 	ItemStack output;
 	int multiplier;
 
 	public VoidCrucibleRecipe(int multiplier, Object in, ItemStack output) {
-		// Could have this better, but meh.
 			if (in instanceof Block)
 				input = new ItemStack(Item.getItemFromBlock((Block) in));
 			else if (in instanceof Item)
